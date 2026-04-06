@@ -189,8 +189,8 @@ struct ContentView: View {
     @ViewBuilder
     private var winnerBanner: some View {
         if let winner = game.winner {
-            let name = winner == "nosotros" ? "Nosotros" : "Ellos"
-            Text("👑 \(name.uppercased()) GANA! 👑")
+            let message = winner == "nosotros" ? "NOSOTROS GANAMOS!" : "ELLOS GANARON!"
+            Text("👑 \(message) 👑")
                 .font(.title3.weight(.black))
                 .padding(.vertical, 14)
                 .frame(maxWidth: .infinity)
