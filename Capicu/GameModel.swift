@@ -15,6 +15,7 @@ struct GameResult: Identifiable {
     let nosotros: Int
     let ellos: Int
     let winner: String
+    let history: [ScoreEntry]
 }
 
 @Observable
@@ -28,6 +29,11 @@ class GameModel {
     var history: [ScoreEntry] = []
     var gameLog: [GameResult] = []
     var winner: String? = nil
+    var gameActive = false
+
+    var hasActiveGame: Bool {
+        nosotros > 0 || ellos > 0 || !history.isEmpty
+    }
 
     var nosotrosPct: Double {
         min(Double(nosotros) / Double(Self.winningScore), 1.0)
@@ -97,7 +103,8 @@ class GameModel {
                 gameNumber: gameLog.count + 1,
                 nosotros: nosotros,
                 ellos: ellos,
-                winner: winner ?? (nosotros > ellos ? "nosotros" : ellos > nosotros ? "ellos" : "empate")
+                winner: winner ?? (nosotros > ellos ? "nosotros" : ellos > nosotros ? "ellos" : "empate"),
+                history: history
             ))
         }
 
@@ -107,6 +114,20 @@ class GameModel {
         ellosInput = ""
         history = []
         winner = nil
+    }
+
+    func startNewGame() {
+        if hasActiveGame {
+            newGame()
+        }
+        gameActive = true
+    }
+
+    func returnToMenu() {
+        if hasActiveGame && winner == nil {
+            newGame()
+        }
+        gameActive = false
     }
 
     var nosotrosWins: Int {

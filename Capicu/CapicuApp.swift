@@ -1,17 +1,18 @@
-//
-//  CapicuApp.swift
-//  Capicu
-//
-//  Created by Andrés Pesquera on 4/5/26.
-//
-
 import SwiftUI
 
 @main
 struct CapicuApp: App {
+    @State private var game = GameModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                MainMenuView(game: game)
+                    .navigationDestination(isPresented: $game.gameActive) {
+                        GameView(game: game)
+                    }
+            }
+            .preferredColorScheme(.dark)
         }
     }
 }

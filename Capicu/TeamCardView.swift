@@ -9,47 +9,69 @@ struct TeamCardView: View {
     let gameOver: Bool
     let onAdd: () -> Void
 
+    @FocusState private var inputFocused: Bool
+
     var body: some View {
-        VStack(spacing: 16) {
-            Text(name.uppercased())
-                .font(.subheadline.weight(.heavy))
-                .tracking(2)
-                .foregroundStyle(accentColor)
+        VStack(spacing: 4) {
+            HStack {
+                Text(name.uppercased())
+                    .font(.caption.weight(.heavy))
+                    .tracking(2)
+                    .foregroundStyle(accentColor)
 
-            Text("\(score)")
-                .font(.system(size: 48, weight: .black, design: .rounded))
-                .foregroundStyle(accentColor)
-                .contentTransition(.numericText())
-                .animation(.snappy, value: score)
+                Spacer()
 
-            Divider()
+                Text("\(remaining) para ganar")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
 
-            Text("\(remaining) para ganar")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+            Spacer(minLength: 0)
 
-            if !gameOver {
-                VStack(spacing: 10) {
-                    TextField("Puntos", text: $input)
+            if gameOver {
+                Text("\(score)")
+                    .font(.system(size: 48, weight: .black, design: .rounded))
+                    .foregroundStyle(accentColor)
+                    .contentTransition(.numericText())
+                    .animation(.snappy, value: score)
+            } else {
+                HStack(spacing: 16) {
+                    Text("\(score)")
+                        .font(.system(size: 48, weight: .black, design: .rounded))
+                        .foregroundStyle(accentColor)
+                        .contentTransition(.numericText())
+                        .animation(.snappy, value: score)
+
+                    TextField("0", text: $input)
                         .keyboardType(.numberPad)
-                        .font(.callout.weight(.medium))
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 10)
-                        .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 10))
-                        .onSubmit { onAdd() }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .frame(width: 110)
+                        .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 12))
+                        .focused($inputFocused)
+                        .onSubmit { inputFocused = false; onAdd() }
 
-                    Button(action: onAdd) {
+                    Button {
+                        inputFocused = false
+                        onAdd()
+                    } label: {
                         Image(systemName: "plus")
-                            .font(.title.weight(.bold))
+                            .font(.title3.weight(.bold))
                             .foregroundStyle(.white)
-                            .frame(width: 72, height: 72)
-                            .background(accentColor, in: RoundedRectangle(cornerRadius: 16))
+                            .frame(width: 52, height: 52)
+                            .background(accentColor, in: RoundedRectangle(cornerRadius: 14))
                     }
                 }
             }
+
+            Spacer(minLength: 0)
         }
-        .padding(20)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             RoundedRectangle(cornerRadius: 16)
                 .fill(.ultraThinMaterial)
