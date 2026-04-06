@@ -7,22 +7,19 @@ struct ContentView: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                ScrollView {
-                    VStack(spacing: 20) {
-                        headerSection
-                        winnerBanner
-                        scoreboardSection
-                        historySection
-                        gameLogSection
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 24)
+            ScrollView {
+                VStack(spacing: 20) {
+                    headerSection
+                    winnerBanner
+                    scoreboardSection
+                    historySection
+                    gameLogSection
+                    actionButtons
                 }
-                .scrollDismissesKeyboard(.interactively)
-
-                actionBar
+                .padding(.horizontal)
+                .padding(.bottom, 40)
             }
+            .scrollDismissesKeyboard(.interactively)
         }
         .preferredColorScheme(.dark)
     }
@@ -237,9 +234,9 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Action Bar (pinned to bottom)
+    // MARK: - Action Buttons
 
-    private var actionBar: some View {
+    private var actionButtons: some View {
         HStack(spacing: 12) {
             Button {
                 game.undo()
@@ -249,6 +246,7 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
+                    .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 12))
             }
             .disabled(game.history.isEmpty)
 
@@ -266,9 +264,6 @@ struct ContentView: View {
                     )
             }
         }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
-        .background(.ultraThinMaterial)
     }
 
     // MARK: - History
