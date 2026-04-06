@@ -29,10 +29,11 @@ struct TeamCardView: View {
                 .foregroundStyle(.secondary)
 
             if !gameOver {
-                HStack(spacing: 10) {
+                VStack(spacing: 10) {
                     TextField("Puntos", text: $input)
                         .keyboardType(.numberPad)
-                        .font(.body.weight(.medium))
+                        .font(.callout.weight(.medium))
+                        .multilineTextAlignment(.center)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
                         .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 10))
@@ -40,10 +41,10 @@ struct TeamCardView: View {
 
                     Button(action: onAdd) {
                         Image(systemName: "plus")
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(.primary)
-                            .frame(width: 40, height: 40)
-                            .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 10))
+                            .font(.title.weight(.bold))
+                            .foregroundStyle(.white)
+                            .frame(width: 72, height: 72)
+                            .background(accentColor, in: RoundedRectangle(cornerRadius: 16))
                     }
                 }
             }
